@@ -1,0 +1,10 @@
+supervisor_config_dir: /etc
+supervisor_apps_config_dir: /etc/supervisor/conf.d
+supervisor_program_config: program.conf.j2
+
+programs:
+    - name: sentry_web
+      command_line: sentry --config={{ sentry_config_path }} start http
+
+    - name: sentry_worker
+      command_line: sentry --config={{ sentry_config_path }} celery worker -B

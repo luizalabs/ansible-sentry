@@ -1,0 +1,10 @@
+[program:{{ item.name }}]
+command={{ virtualenv_path }}/bin/{{ item.command_line }}
+directory=/home/{{ sentry_user }}/
+user={{ sentry_user }}
+stdout_logfile=/home/{{ sentry_user }}/{{ item.name }}.log
+stderr_logfile=/home/{{ sentry_user }}/{{ item.name }}.log
+autostart=true
+autorestart=true
+stopsignal=QUIT
+environment=DATABASE_URL="{{ database_url }}"
