@@ -1,0 +1,14 @@
+from sentry.conf.server import *
+
+
+SENTRY_CACHE = 'sentry.cache.django.DjangoCache'
+SENTRY_URL_PREFIX = '{{ "https" if sentry_https_url else "http" }}://{{ sentry_hostname }}{% if sentry_port != '80' %}:{{ sentry_port }}{% endif %}'
+
+{% if sentry_cache_backend and sentry_cache_location %}
+CACHES = {
+    'default': {
+        'BACKEND': '{{ sentry_cache_backend }}',
+        'LOCATION': '{{ sentry_cache_location }}',
+    }
+}
+{% endif %}

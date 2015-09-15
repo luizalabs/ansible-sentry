@@ -1,0 +1,49 @@
+- name: ensure so dependencies are installed
+  apt: name={{ item }} state=present
+  with_items:
+    - libxml2-dev
+    - libxslt-dev
+    - libz-dev
+    - libffi-dev
+    - libssl-dev
+  sudo: yes
+
+- name: install sentry depedencies
+  pip: name={{ item }}
+       virtualenv={{ virtualenv_path }}
+  sudo: yes
+  sudo_user: "{{ sentry_user }}"
+  with_items:
+      - django-redis-cache
+
+- name: ensure sentry is installed
+  pip: name=sentry[{{ database_schema }}]
+       virtualenv={{ virtualenv_path }}
+  sudo: yes
+  sudo_user: "{{ sentry_user }}"
+
+- name: configure Sentry
+  template: src=config.py.j2 dest={{ sentry_config_path }} owner={{ sentry_user }}
+  sudo: yes
+  sudo_user: "{{ sentry_user }}"
+
+- name: ensure config file exists
+  stat: path=/home/{{ sentry_user }}/.sentry/sentry.conf.py
+  register: sentry_conf_file
+
+- name: setup initial sentry data
+  shell: "{{ virtualenv_path }}/bin/sentry init"
+  sudo: yes
+  sudo_user: "{{ sentry_user }}"
+  when: sentry_conf_file.stat.exists == False
+
+- name: upgrade sentry
+  shell: "DATABASE_URL={{ database_url }} {{ virtualenv_path }}/bin/sentry --config={{ sentry_config_path }} upgrade --noinput"
+  sudo: yes
+  sudo_user: "{{ sentry_user }}"
+
+- name: create admin user
+  shell: "DATABASE_URL={{ database_url }} {{ virtualenv_path }}/bin/sentry --config={{ sentry_config_path }} createuser --email {{ admin_email }} --password {{ admin_password }} --superuser"
+  ignore_errors: yes
+  sudo: yes
+  sudo_user: "{{ sentry_user }}"

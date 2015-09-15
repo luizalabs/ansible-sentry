@@ -1,0 +1,9 @@
+admin_email: admin@admin.com
+admin_password: 123456
+
+sentry_https_url: False
+sentry_hostname: localhost
+sentry_port: 8000
+
+sentry_cache_backend: "redis_cache.RedisCache"
+sentry_cache_location: "localhost:6379"
