@@ -1,0 +1,19 @@
+- name: ensure nginx is installed
+  apt: name=nginx state=present
+  sudo: yes
+
+- name: set nginx config
+  copy: src=nginx.conf dest={{ nginx_config_dir }}/nginx.conf
+  sudo: yes
+  notify:
+    - reload nginx
+
+- name: set virtual host config
+  template: src=virtual.conf.j2 dest={{ nginx_config_dir }}/conf.d/virtual.conf
+  sudo: yes
+  notify:
+    - reload nginx
+
+- name: ensure nginx is started
+  service: name=nginx state=started
+  sudo: yes

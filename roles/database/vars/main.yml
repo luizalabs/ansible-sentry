@@ -1,0 +1,1 @@
+database_process_user: "{% if database_schema == 'postgres' %}postgres{% else %}mysql{% endif %}"

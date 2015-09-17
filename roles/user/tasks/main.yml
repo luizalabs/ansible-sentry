@@ -1,0 +1,11 @@
+- name: ensure sentry group exists
+  group: name={{ sentry_group }} state=present
+  sudo: yes
+
+- name: ensure sentry user exists
+  user: name={{ sentry_user }}
+        comment="Sentry user"
+        createhome=yes
+        group={{ sentry_group }}
+        state=present
+  sudo: yes

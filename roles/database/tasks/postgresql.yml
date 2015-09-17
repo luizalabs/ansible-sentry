@@ -1,0 +1,26 @@
+- name: ensure postgresql is installed
+  apt: name={{ item }} state=present
+  sudo: yes
+  with_items:
+      - postgresql
+      - postgresql-contrib
+      - libpq-dev
+
+- name: install postgresql requirements for ansible
+  pip: name=psycopg2
+  sudo: yes
+
+- name: ensure postgresql database is created
+  postgresql_db: name={{ database_name }}
+  sudo: yes
+  sudo_user: "{{ database_process_user }}"
+
+- name: ensure user has access to postgresql database
+  postgresql_user: db={{ database_name }} name={{ database_user }} password={{ database_password }} priv=ALL
+  sudo: yes
+  sudo_user: "{{ database_process_user }}"
+
+- name: ensure postgresql adminpack extension is installed
+  postgresql_ext: name=adminpack db={{ database_name }}
+  sudo: yes
+  sudo_user: "{{ database_process_user }}"

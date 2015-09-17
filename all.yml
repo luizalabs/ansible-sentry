@@ -1,0 +1,11 @@
+- hosts:
+    - development
+  roles:
+    - ubuntu
+    - user
+    - python
+    - redis
+    - database
+    - sentry
+    - supervisor
+    - nginx

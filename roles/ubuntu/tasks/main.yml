@@ -1,0 +1,7 @@
+- name: update apt packages cache
+  apt: update_cache=yes
+  sudo: yes
+
+- name: ensure GCC is installed
+  apt: name=build-essential state=present
+  sudo: yes
