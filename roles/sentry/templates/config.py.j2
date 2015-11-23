@@ -1,9 +1,16 @@
 from sentry.conf.server import *
 
 
-SENTRY_CACHE = 'sentry.cache.django.DjangoCache'
 SENTRY_URL_PREFIX = '{{ "https" if sentry_https_url else "http" }}://{{ sentry_hostname }}{% if sentry_port != '80' %}:{{ sentry_port }}{% endif %}'
 
+{% if sentry_ses_email_backend %}
+EMAIL_BACKEND = 'django_ses.SESBackend'
+
+AWS_ACCESS_KEY_ID = '{{ aws_access_key_id }}'
+AWS_SECRET_ACCESS_KEY = '{{ aws_secret_access_key }}'
+{% endif %}
+
+SENTRY_CACHE = 'sentry.cache.django.DjangoCache'
 {% if sentry_cache_backend and sentry_cache_location %}
 CACHES = {
     'default': {
