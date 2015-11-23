@@ -14,6 +14,8 @@
   sudo: yes
   sudo_user: "{{ sentry_user }}"
   with_items:
+      - boto
+      - django-ses
       - django-redis-cache
 
 - name: ensure sentry is installed

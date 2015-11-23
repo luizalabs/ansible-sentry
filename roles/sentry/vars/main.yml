@@ -7,3 +7,7 @@ sentry_port: 8000
 
 sentry_cache_backend: "redis_cache.RedisCache"
 sentry_cache_location: "localhost:6379"
+
+sentry_ses_email_backend: True
+aws_access_key_id: ""
+aws_secret_access_key: ""
