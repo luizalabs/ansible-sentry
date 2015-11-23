@@ -17,6 +17,7 @@
       - boto
       - django-ses
       - django-redis-cache
+      - https://github.com/getsentry/sentry-slack/archive/master.zip
 
 - name: ensure sentry is installed
   pip: name=sentry[{{ database_schema }}]
